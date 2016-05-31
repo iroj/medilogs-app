@@ -1,0 +1,26 @@
+<ion-navbar *navbar>
+    <button menuToggle>
+        <ion-icon name="md-menu"></ion-icon>
+    </button>
+    <ion-title>Documents</ion-title>
+</ion-navbar>
+<ion-content padding class="documents">
+    <ion-list>
+        <ion-list-header>
+            Encounters
+        </ion-list-header>
+        <button ion-item *ngFor="let item of encounterList" (click)="openPage(item.component)">
+            <ion-icon name='{{item.icon}}'> </ion-icon>
+            {{item.title}}
+        </button>
+    </ion-list>
+    <ion-list>
+        <ion-list-header>
+            Evaluation
+        </ion-list-header>
+        <button ion-item *ngFor="let item of evaluationList" (click)="openPage(item.component)">
+            <ion-icon name='{{item.icon}}'> </ion-icon>
+            {{item.title}}
+        </button>
+    </ion-list>
+</ion-content>
