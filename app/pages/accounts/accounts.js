@@ -1,20 +1,24 @@
-import {Page, NavController} from 'ionic-angular';
+import { Page, Storage, LocalStorage, NavController, Modal, ViewController } from 'ionic-angular';
+import {Data} from '../../providers/data/data';
 
-/*
-  Generated class for the AccountsPage page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Page({
-  templateUrl: 'build/pages/accounts/accounts.html',
+  templateUrl: 'build/pages/accounts/accounts.html'
 })
 export class AccountsPage {
   static get parameters() {
-    return [[NavController]];
+    return [
+      [NavController],
+      [Data]
+    ];
   }
 
-  constructor(nav) {
+  constructor(nav, dataService) {
     this.nav = nav;
+    this.dataService = dataService;
+
+
+  }
+  logOut() {
+    this.dataService.save({});
   }
 }
