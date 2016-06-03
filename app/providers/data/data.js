@@ -5,16 +5,20 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class Data {
   constructor() {
-    this.storage = new Storage(SqlStorage, { name: 'todo' });
+    this.storage = new Storage(SqlStorage, { name: 'mediLogs' });
     this.data = null;
   }
 
-  getData() {
-    return this.storage.get('todos');
+  getData(item) {
+    return this.storage.get(item);
   }
 
-  save(data) {
+  save(item, data) {
     let newData = JSON.stringify(data);
-    this.storage.set('todos', newData);
+    this.storage.set(item, newData);
+  }
+
+  remove(item) {
+    this.storage.remove(item);
   }
 }

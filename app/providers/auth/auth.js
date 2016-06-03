@@ -1,44 +1,56 @@
-import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
-import 'rxjs/add/operator/map';
+// import { Storage, LocalStorage } from 'ionic-angular';
+// import { AuthHttp, JwtHelper, tokenNotExpired } from 'angular2-jwt';
+// import { Injectable } from '@angular/core';
+// import { Observable } from 'rxjs/Rx';
+// // Avoid name not found warnings
+// // declare var Auth0Lock:any;
 
-/*
-  Generated class for the Auth provider.
 
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
-@Injectable()
-export class Auth {
-  static get parameters(){
-    return [[Http]]
-  }  
+// @Injectable()
+// export class Auth {
+//   constructor() {
+//     this.authHttp = AuthHttp;
+//     this.jwtHelper = new JwtHelper();
+//     this.lock = new Auth0Lock('zTcQcD0rb48nBKSqtQWPGEYmMTSB0hBB', 'iroj.auth0.com');
+//     this.local = new Storage(LocalStorage);
+//     this.user = Object;
+//     // If there is a profile saved in local storage
+//     this.local.get('profile').then(profile => {
+//       this.user = JSON.parse(profile);
+//     }).catch(error => {
+//       console.log(error);
+//     });
+//   }
 
-  constructor(http) {
-    this.http = http;
-    this.data = null;
-  }
+//   authenticated() {
+//     // Check if there's an unexpired JWT
+//     return tokenNotExpired();
+//   }
 
-  load() {
-    if (this.data) {
-      // already loaded data
-      return Promise.resolve(this.data);
-    }
+//   login() {
+//     // Show the Auth0 Lock widget
+//     this.lock.show({
+//       authParams: {
+//         scope: 'openid offline_access',
+//         device: 'Mobile device'
+//       }
+//     }, (err, profile, token, accessToken, state, refreshToken) => {
+//       if (err) {
+//         alert(err);
+//       }
+//       // If authentication is successful, save the items
+//       // in local storage
+//       this.local.set('profile', JSON.stringify(profile));
+//       this.local.set('id_token', token);
+//       this.local.set('refresh_token', refreshToken);
+//       this.user = profile;
+//     });
+//   }
 
-    // don't have the data yet
-    return new Promise(resolve => {
-      // We're using Angular Http provider to request the data,
-      // then on the response it'll map the JSON data to a parsed JS object.
-      // Next we process the data and resolve the promise with the new data.
-      this.http.get('path/to/data.json')
-        .map(res => res.json())
-        .subscribe(data => {
-          // we've got back the raw data, now generate the core schedule data
-          // and save the data for later reference
-          this.data = data;
-          resolve(this.data);
-        });
-    });
-  }
-}
-
+//   logout() {
+//     this.local.remove('profile');
+//     this.local.remove('id_token');
+//     this.local.remove('refresh_token');
+//     this.user = null;
+//   }
+// }
