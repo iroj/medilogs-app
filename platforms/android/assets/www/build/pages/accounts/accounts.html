@@ -4,5 +4,69 @@
     </button>
     <ion-title>Account</ion-title>
 </ion-navbar>
-<ion-content padding class="accounts">
+<ion-content class="login" *ngIf="!authenticated">
+    <!-- <div padding> -->
+        <ion-segment [(ngModel)]="authType">
+            <ion-segment-button value="login">
+                Login
+            </ion-segment-button>
+            <ion-segment-button value="signup">
+                Signup
+            </ion-segment-button>
+        </ion-segment>
+    <!-- </div> -->
+    <div [ngSwitch]="authType">
+        <form *ngSwitchWhen="'login'" #loginCreds="ngForm" (ngSubmit)="login(loginCreds.value)">
+            <ion-item>
+                <ion-label floating>Username</ion-label>
+                <ion-input type="text" ngControl="username"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label floating>Password</ion-label>
+                <ion-input type="password" ngControl="password"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label> Stay Logged In</ion-label>
+                <ion-toggle checked="true" ngControl="stayConnected" value='stayConnected'></ion-toggle>
+            </ion-item>
+            <div padding>
+                <button block type="submit">Login</button>
+            </div>
+        </form>
+        <form *ngSwitchWhen="'signup'" #signupCreds="ngForm" (ngSubmit)="signup(signupCreds.value)">
+            <ion-item>
+                <ion-label floating>Username</ion-label>
+                <ion-input type="text" ngControl="userName"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label floating>Password</ion-label>
+                <ion-input type="password" ngControl="password"></ion-input>
+            </ion-item>
+             <ion-item>
+                <ion-label floating>E-mail Address</ion-label>
+                <ion-input type="email" ngControl="email"></ion-input>
+            </ion-item>
+            <ion-item (click)='faculty=!faculty'>
+                <ion-label *ngIf='faculty'> Faculty</ion-label>
+                <ion-label *ngIf='!faculty'> Student</ion-label>
+                <ion-toggle checked="true" ngControl="faculty" value='faculty'></ion-toggle>
+            </ion-item>
+            <ion-item>
+                <ion-label> Stay Logged In</ion-label>
+                <ion-toggle checked="true" ngControl="stayConnected" value='stayConnected'></ion-toggle>
+            </ion-item>
+            <div padding>
+                <button block type="submit">Signup</button>
+            </div>
+        </form>
+    </div>
+    <div padding>
+        <p *ngIf="error" class="error">{{ error._body }}</p>
+    </div>
+</ion-content>
+<ion-content class="accounts" *ngIf="authenticated">
+    <div padding>
+        <h1>Welcome, {{user.userName}}</h1>
+        <button block (click)="logout()">Logout</button>
+    </div>
 </ion-content>

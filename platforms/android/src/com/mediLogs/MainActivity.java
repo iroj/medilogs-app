@@ -17,7 +17,7 @@
        under the License.
  */
 
-package com.ionicframework.medilogsapp776422;
+package com.mediLogs;
 
 import android.os.Bundle;
 import org.apache.cordova.*;

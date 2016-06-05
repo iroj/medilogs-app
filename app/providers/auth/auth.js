@@ -1,56 +1,64 @@
-// import { Storage, LocalStorage } from 'ionic-angular';
-// import { AuthHttp, JwtHelper, tokenNotExpired } from 'angular2-jwt';
-// import { Injectable } from '@angular/core';
-// import { Observable } from 'rxjs/Rx';
-// // Avoid name not found warnings
-// // declare var Auth0Lock:any;
+import { Injectable } from '@angular/core';
+import { Storage, SqlStorage } from 'ionic-angular';
+import 'rxjs/Operator';
+import { Http, Headers, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 
+@Injectable()
+export class Auth {
+  static get parameters() {
+    return [
+      [Http]
+    ];
+  }
 
-// @Injectable()
-// export class Auth {
-//   constructor() {
-//     this.authHttp = AuthHttp;
-//     this.jwtHelper = new JwtHelper();
-//     this.lock = new Auth0Lock('zTcQcD0rb48nBKSqtQWPGEYmMTSB0hBB', 'iroj.auth0.com');
-//     this.local = new Storage(LocalStorage);
-//     this.user = Object;
-//     // If there is a profile saved in local storage
-//     this.local.get('profile').then(profile => {
-//       this.user = JSON.parse(profile);
-//     }).catch(error => {
-//       console.log(error);
-//     });
-//   }
+  constructor(http) {
+    this.http = http;
+    this.storage = new Storage(SqlStorage, { name: 'mediLogs' });
 
-//   authenticated() {
-//     // Check if there's an unexpired JWT
-//     return tokenNotExpired();
-//   }
+    this.headers = new Headers({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+    this.options = new RequestOptions({
+      headers: this.headers
+    });
+    this.storage.get('server').then(server => {
+      this.serverAdd = JSON.parse(server);
+      console.log(this.serverAdd);
+    });
+  }
 
-//   login() {
-//     // Show the Auth0 Lock widget
-//     this.lock.show({
-//       authParams: {
-//         scope: 'openid offline_access',
-//         device: 'Mobile device'
-//       }
-//     }, (err, profile, token, accessToken, state, refreshToken) => {
-//       if (err) {
-//         alert(err);
-//       }
-//       // If authentication is successful, save the items
-//       // in local storage
-//       this.local.set('profile', JSON.stringify(profile));
-//       this.local.set('id_token', token);
-//       this.local.set('refresh_token', refreshToken);
-//       this.user = profile;
-//     });
-//   }
+  login(loginCred) {
+    let link = this.serverAdd + "api/getInfo";
+    let cred = 'userName=' + loginCred.userName + '&password=' + loginCred.password;
+    return this.http.post(link, cred, this.options)
+      .map(res => res.json())
+      .do(res => {
+        if (loginCred.stayConnected && res.user) {
+          loginCred.id = res.user._id
+          this.storage.set('user', loginCred);
+        }
+      })
+  };
+  handleError(error) {
+    console.error(error);
+    return Observable.throw(error.json().error || 'Server error');
+  }
 
-//   logout() {
-//     this.local.remove('profile');
-//     this.local.remove('id_token');
-//     this.local.remove('refresh_token');
-//     this.user = null;
-//   }
-// }
+  signup(userCred) {
+    let link = this.serverAdd + "api/register";
+    let body = 'userName=' + userCred.userName + '&password=' + userCred.password + '&email=' + userCred.email + '&faculty=' + userCred.faculty;
+    return this.http.post(link, body, this.options)
+      .map(res => res.json())
+      .do(res => {
+        if (userCred.stayConnected && res.user) {
+          userCred.id = res.user._id
+          this.storage.set('user', userCred);
+        }
+      })
+  }
+
+  logout(item) {
+    this.storage.remove('user');
+  }
+}

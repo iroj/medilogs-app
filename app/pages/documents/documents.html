@@ -9,7 +9,7 @@
         <ion-list-header>
             Encounters
         </ion-list-header>
-        <button ion-item *ngFor="let item of encounterList" (click)="openPage(item.component)">
+        <button class ='tabs' ion-item *ngFor="let item of encounterList" (click)="openPage(item.component)">
             <ion-icon name='{{item.icon}}'> </ion-icon>
             {{item.title}}
         </button>
