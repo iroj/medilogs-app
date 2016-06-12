@@ -9384,3 +9384,44 @@ body {
   font-family: "Roboto", "Helvetica Neue", sans-serif;
   font-size: 1.4rem;
   background-color: #fff; }
+
+.clinic-evaluation .range-slider {
+  margin-left: 15px; }
+  .clinic-evaluation .range-slider h4 {
+    font-size: 14px;
+    margin: 0%; }
+  .clinic-evaluation .range-slider p {
+    float: right; }
+  .clinic-evaluation .range-slider input {
+    text-align: center;
+    width: 90%;
+    border-radius: 50%; }
+
+.clinic-evaluation .special {
+  margin-left: 15px; }
+
+.clinic-evaluation .down {
+  float: right; }
+
+.clinic-evaluation .toggle-icon {
+  width: 36px;
+  height: 20px; }
+
+.clinic-evaluation .toggle-inner {
+  top: 0;
+  width: 20px;
+  height: 20px; }
+
+.clinic-evaluation .radio-options {
+  font-size: 14px;
+  margin-left: 20px; }
+
+.clinic-evaluation .radio-header h4 {
+  margin: 0%; }
+
+.clinic-evaluation .radio-header p {
+  margin: 2px;
+  float: right; }
+
+.title-center {
+  text-align: center; }

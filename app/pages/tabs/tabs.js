@@ -1,18 +1,27 @@
-import {Page} from 'ionic-angular';
-import {AccountsPage} from '../accounts/accounts';
-import {DocumentsPage} from '../documents/documents';
-import {AnalysisPage} from '../analysis/analysis';
+import { Page } from 'ionic-angular';
+import { AccountsPage } from '../accounts/accounts';
+import { DocumentsPage } from '../documents/documents';
+import { AnalysisPage } from '../analysis/analysis';
+import { Data } from '../../providers/data/data';
 
 
 @Page({
   templateUrl: 'build/pages/tabs/tabs.html'
 })
 export class TabsPage {
-  constructor() {
+  static get parameters() {
+    return [
+      [Data]
+    ];
+  }
+  constructor(dataService) {
+    this.dataService = dataService;
     // this tells the tabs component which Pages
     // should be each tab's root Page
-    this.accounts = AccountsPage;
     this.documents = DocumentsPage;
+    this.accounts = AccountsPage;
     this.analysis = AnalysisPage;
+
+    
   }
 }

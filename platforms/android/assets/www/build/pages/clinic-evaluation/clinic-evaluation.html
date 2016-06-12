@@ -1,8 +1,418 @@
 <ion-navbar *navbar>
-    <button menuToggle>
-        <ion-icon name="md-menu"></ion-icon>
-    </button>
     <ion-title>Clinic Evaluation</ion-title>
 </ion-navbar>
+<ion-searchbar [(ngModel)]="searchQuery" (input)="getItems($event)" placeholder='Search for Students' (cancel)="onCancel($event)"></ion-searchbar>
+<ion-list>
+    <ion-item (click)='selectStudent(student)' *ngFor="let student of filteredStudents">
+        <ion-avatar item-left>
+            <img src="img/unknown.png">
+        </ion-avatar>
+        <h2>{{ student }}</h2>
+    </ion-item>
+</ion-list>
 <ion-content padding class="clinic-evaluation">
+    <form #clinicForm="ngForm" (ngSubmit)="submit(clinicForm.value)">
+        <ion-item *ngIf='selectedStudent'>
+            <ion-label>Student: {{selectedStudent.fullName}}</ion-label>
+        </ion-item>
+        <ion-item>
+            <ion-label>Date</ion-label>
+            <ion-input type="date" ngControl="date"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Time</ion-label>
+            <ion-input type="time" ngControl="time"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>Clinic</ion-label>
+            <ion-select ngControl="clinic">
+                <ion-option value="Primary">Primary Care</ion-option>
+                <ion-option value="Pediatrics">Pediatrics</ion-option>
+                <ion-option value="Vision">Vision Therapy</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>Encounter Type</ion-label>
+            <ion-select ngControl="encounter">
+                <ion-option value="comp-strf">Comp Straightforward</ion-option>
+                <ion-option value="comp-comp">Comp Complicated</ion-option>
+                <ion-option value="prob-strf">Problem focused straighforward</ion-option>
+                <ion-option value="prob-comp">Problem focused complicated</ion-option>
+                <ion-option value="refraction">Refraction only</ion-option>
+                <ion-option value="dfe">DFE only</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item (click)="performance = !performance">
+            <ion-label> Rate student's performance
+                <ion-icon *ngIf='!performance' class='down' name='arrow-down'></ion-icon>
+                <ion-icon *ngIf='performance' class='down' name='arrow-up'></ion-icon>
+            </ion-label>
+        </ion-item>
+        <ion-list *ngIf='performance'>
+            <ion-item class='range-slider'>
+                <h4>CC and HPI</h4>
+                <input type="range" ngControl="cc_hpi" min="0" max="10" step='1'>
+                <p>{{clinicForm.value.cc_hpi}}</p>
+            </ion-item>
+            <ion-item class='range-slider'>
+                <h4>Other history items</h4>
+                <input type="range" ngControl="history" min="0" max="10" step='1'>
+                <p>{{clinicForm.value.history}}</p>
+            </ion-item>
+            <ion-item class='range-slider'>
+                <h4>Entrance Testing</h4>
+                <input type="range" ngControl="entrance" min="0" max="10" step='1'>
+                <p>{{clinicForm.value.entrance}}</p>
+            </ion-item>
+            <ion-item class='range-slider'>
+                <h4>Slit Lamp</h4>
+                <input type="range" ngControl="slit" min="0" max="10" step='1'>
+                <p>{{clinicForm.value.slit}}</p>
+            </ion-item>
+            <ion-item class='range-slider'>
+                <h4>IOP Testing</h4>
+                <input type="range" ngControl="iop" min="0" max="10" step='1'>
+                <p>{{clinicForm.value.iop}}</p>
+            </ion-item>
+            <ion-item class='range-slider'>
+                <h4>Fundus</h4>
+                <input type="range" ngControl="fundus" min="0" max="10" step='1'>
+                <p>{{clinicForm.value.fundus}}</p>
+            </ion-item>
+            <ion-item class='range-slider'>
+                <h4>A & P</h4>
+                <input type="range" ngControl="anp" min="0" max="10" step='1'>
+                <p>{{clinicForm.value.anp}}</p>
+            </ion-item>
+        </ion-list>
+        <ion-item>
+            <ion-label> Was any special testing done?</ion-label>
+            <ion-toggle checked="false" class='small-toggle' [(ngModel)]='special'></ion-toggle>
+        </ion-item>
+        <ion-list *ngIf='special' ngControl='atlas' radio-group>
+            <ion-item class='radio-header'>
+                <h4>Atlas Topography 
+                <p>({{clinicForm.value.atlas}})</p>
+                </h4>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Partial I & R</ion-label>
+                <ion-radio checked="true" value="0.25"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Partial I & R</ion-label>
+                <ion-radio value="0.5"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Complete I & R</ion-label>
+                <ion-radio value="0.75"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Complete I & R</ion-label>
+                <ion-radio value="1"></ion-radio>
+            </ion-item>
+        </ion-list>
+        <ion-list *ngIf='special' ngControl='bscan' radio-group>
+            <ion-item class='radio-header'>
+                <h4>B-Scan
+                <p>({{clinicForm.value.bscan}})</p>
+                </h4>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Partial I & R</ion-label>
+                <ion-radio checked="true" value="0.25"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Partial I & R</ion-label>
+                <ion-radio value="0.5"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Complete I & R</ion-label>
+                <ion-radio value="0.75"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Complete I & R</ion-label>
+                <ion-radio value="1"></ion-radio>
+            </ion-item>
+        </ion-list>
+        <ion-list *ngIf='special' ngControl='fdt' radio-group>
+            <ion-item class='radio-header'>
+                <h4>FDT
+                <p>({{clinicForm.value.fdt}})</p>
+                </h4>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Partial I & R</ion-label>
+                <ion-radio checked="true" value="0.25"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Partial I & R</ion-label>
+                <ion-radio value="0.5"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Complete I & R</ion-label>
+                <ion-radio value="0.75"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Complete I & R</ion-label>
+                <ion-radio value="1"></ion-radio>
+            </ion-item>
+        </ion-list>
+        <ion-list *ngIf='special' ngControl='gonio' radio-group>
+            <ion-item class='radio-header'>
+                <h4>Gonioscopy
+                <p>({{clinicForm.value.gonio}})</p>
+                </h4>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Partial I & R</ion-label>
+                <ion-radio checked="true" value="0.25"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Partial I & R</ion-label>
+                <ion-radio value="0.5"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Complete I & R</ion-label>
+                <ion-radio value="0.75"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Complete I & R</ion-label>
+                <ion-radio value="1"></ion-radio>
+            </ion-item>
+        </ion-list>
+        <ion-list *ngIf='special' ngControl='hvf' radio-group>
+            <ion-item class='radio-header'>
+                <h4>HVF
+                <p>({{clinicForm.value.hvf}})</p>
+                </h4>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Partial I & R</ion-label>
+                <ion-radio checked="true" value="0.25"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Partial I & R</ion-label>
+                <ion-radio value="0.5"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Complete I & R</ion-label>
+                <ion-radio value="0.75"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Complete I & R</ion-label>
+                <ion-radio value="1"></ion-radio>
+            </ion-item>
+        </ion-list>
+        <ion-list *ngIf='special' ngControl='moct' radio-group>
+            <ion-item class='radio-header'>
+                <h4>Macular OCT
+                <p>({{clinicForm.value.moct}})</p>
+                </h4>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Partial I & R</ion-label>
+                <ion-radio checked="true" value="0.25"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Partial I & R</ion-label>
+                <ion-radio value="0.5"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Complete I & R</ion-label>
+                <ion-radio value="0.75"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Complete I & R</ion-label>
+                <ion-radio value="1"></ion-radio>
+            </ion-item>
+        </ion-list>
+        <ion-list *ngIf='special' ngControl='ovf' radio-group>
+            <ion-item class='radio-header'>
+                <h4>Octopus VF
+                <p>({{clinicForm.value.ovf}})</p>
+                </h4>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Partial I & R</ion-label>
+                <ion-radio checked="true" value="0.25"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Partial I & R</ion-label>
+                <ion-radio value="0.5"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Complete I & R</ion-label>
+                <ion-radio value="0.75"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Complete I & R</ion-label>
+                <ion-radio value="1"></ion-radio>
+            </ion-item>
+        </ion-list>
+        <ion-list *ngIf='special' ngControl='onoct' radio-group>
+            <ion-item class='radio-header'>
+                <h4>ON OCT
+                <p>({{clinicForm.value.onoct}})</p>
+                </h4>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Partial I & R</ion-label>
+                <ion-radio checked="true" value="0.25"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Partial I & R</ion-label>
+                <ion-radio value="0.5"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Complete I & R</ion-label>
+                <ion-radio value="0.75"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Complete I & R</ion-label>
+                <ion-radio value="1"></ion-radio>
+            </ion-item>
+        </ion-list>
+        <ion-list *ngIf='special' ngControl='optos' radio-group>
+            <ion-item class='radio-header'>
+                <h4>Optos
+                <p>({{clinicForm.value.optos}})</p>
+                </h4>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Partial I & R</ion-label>
+                <ion-radio checked="true" value="0.25"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Partial I & R</ion-label>
+                <ion-radio value="0.5"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Complete I & R</ion-label>
+                <ion-radio value="0.75"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Complete I & R</ion-label>
+                <ion-radio value="1"></ion-radio>
+            </ion-item>
+        </ion-list>
+        <ion-list *ngIf='special' ngControl='orbscan' radio-group>
+            <ion-item class='radio-header'>
+                <h4>Orbscan
+                <p>({{clinicForm.value.orbscan}})</p>
+                </h4>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Partial I & R</ion-label>
+                <ion-radio checked="true" value="0.25"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Partial I & R</ion-label>
+                <ion-radio value="0.5"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Complete I & R</ion-label>
+                <ion-radio value="0.75"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Complete I & R</ion-label>
+                <ion-radio value="1"></ion-radio>
+            </ion-item>
+        </ion-list>
+        <ion-list *ngIf='special' ngControl='pachymeter' radio-group>
+            <ion-item class='radio-header'>
+                <h4>Pachymeter
+                <p>({{clinicForm.value.pachymeter}})</p>
+                </h4>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Partial I & R</ion-label>
+                <ion-radio checked="true" value="0.25"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Partial I & R</ion-label>
+                <ion-radio value="0.5"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Complete I & R</ion-label>
+                <ion-radio value="0.75"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Complete I & R</ion-label>
+                <ion-radio value="1"></ion-radio>
+            </ion-item>
+        </ion-list>
+        <ion-list *ngIf='special' ngControl='spectralis' radio-group>
+            <ion-item class='radio-header'>
+                <h4>Spectralis
+                <p>({{clinicForm.value.spectralis}})</p>
+                </h4>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Partial I & R</ion-label>
+                <ion-radio checked="true" value="0.25"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Partial I & R</ion-label>
+                <ion-radio value="0.5"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Complete I & R</ion-label>
+                <ion-radio value="0.75"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Complete I & R</ion-label>
+                <ion-radio value="1"></ion-radio>
+            </ion-item>
+        </ion-list>
+        <ion-list *ngIf='special' ngControl='visucam' radio-group>
+            <ion-item class='radio-header'>
+                <h4>Visucam Photos
+                <p>({{clinicForm.value.visucam}})</p>
+                </h4>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Partial I & R</ion-label>
+                <ion-radio checked="true" value="0.25"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Partial I & R</ion-label>
+                <ion-radio value="0.5"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Complete I & R</ion-label>
+                <ion-radio value="0.75"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Complete I & R</ion-label>
+                <ion-radio value="1"></ion-radio>
+            </ion-item>
+        </ion-list>
+        <ion-list *ngIf='special' ngControl='zeiss' radio-group>
+            <ion-item class='radio-header'>
+                <h4>Zeiss FF-450
+                <p>({{clinicForm.value.zeiss}})</p>
+                </h4>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Partial I & R</ion-label>
+                <ion-radio checked="true" value="0.25"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Partial I & R</ion-label>
+                <ion-radio value="0.5"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Assisted / Complete I & R</ion-label>
+                <ion-radio value="0.75"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Independent / Complete I & R</ion-label>
+                <ion-radio value="1"></ion-radio>
+            </ion-item>
+        </ion-list>
+        <div padding>
+            <button block [disabled]="!selectedStudent" type="submit">Submit</button>
+        </div>
+    </form>
 </ion-content>

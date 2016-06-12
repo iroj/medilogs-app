@@ -1,13 +1,12 @@
 <ion-navbar *navbar>
-    <button menuToggle>
-        <ion-icon name="md-menu"></ion-icon>
-    </button>
+   
     <ion-title>Account</ion-title>
 </ion-navbar>
-
 <ion-content class="accounts">
     <div padding>
-        <!-- <h1>Welcome, {{user.userName}}</h1> -->
+        <h1>Welcome, {{user.fullName}}</h1>
+        <p *ngIf="!user.faculty" >(Student)</p>
+        <p *ngIf="user.faculty" >(Faculty)</p>
         <button block (click)="logout()">Logout</button>
     </div>
 </ion-content>

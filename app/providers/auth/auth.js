@@ -3,60 +3,69 @@ import { Storage, SqlStorage } from 'ionic-angular';
 import 'rxjs/Operator';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { Global } from '../global/global';
 
 @Injectable()
 export class Auth {
   static get parameters() {
     return [
-      [Http]
+      [Http],
+      [Global]
     ];
   }
 
-  constructor(http) {
+  constructor(http, global) {
     this.http = http;
     this.storage = new Storage(SqlStorage, { name: 'mediLogs' });
-
+    this.global = global;
     this.headers = new Headers({
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/json'
     });
     this.options = new RequestOptions({
       headers: this.headers
     });
-    this.storage.get('server').then(server => {
-      this.serverAdd = JSON.parse(server);
-      console.log(this.serverAdd);
-    });
+
   }
 
   login(loginCred) {
-    let link = this.serverAdd + "api/getInfo";
-    let cred = 'userName=' + loginCred.userName + '&password=' + loginCred.password;
-    return this.http.post(link, cred, this.options)
+    let link = this.global.getServer() + "api/getInfo";
+    return this.http.post(link, JSON.stringify(loginCred), this.options)
       .map(res => res.json())
       .do(res => {
         if (loginCred.stayConnected && res.user) {
-          loginCred.id = res.user._id
-          this.storage.set('user', loginCred);
+          loginCred = res.user
+          this.storage.set('user', JSON.stringify(loginCred));
+
         }
       })
   };
+
   handleError(error) {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');
   }
 
   signup(userCred) {
-    let link = this.serverAdd + "api/register";
-    let body = 'userName=' + userCred.userName + '&password=' + userCred.password + '&email=' + userCred.email + '&faculty=' + userCred.faculty;
-    return this.http.post(link, body, this.options)
+    let link = this.global.getServer() + "api/register";
+    return this.http.post(link, JSON.stringify(userCred), this.options)
       .map(res => res.json())
       .do(res => {
         if (userCred.stayConnected && res.user) {
-          userCred.id = res.user._id
-          this.storage.set('user', userCred);
+          userCred = res.user
+          this.storage.set('user', JSON.stringify(userCred));
         }
       })
   }
+
+  submit(apple) {
+    console.log(apple);
+    let link = this.global.getServer() + "api/articles";
+    return this.http.post(link, JSON.stringify(apple), this.options)
+      .map(res => res.json())
+      .do(res => {
+        console.log(res)
+      })
+  };
 
   logout(item) {
     this.storage.remove('user');

@@ -5,10 +5,31 @@
   Ionic pages and navigation.
 -->
 <ion-navbar *navbar>
-    <button menuToggle>
-        <ion-icon name="md-menu"></ion-icon>
-    </button>
     <ion-title>Analysis</ion-title>
 </ion-navbar>
-<ion-content padding class="analysis">
+<ion-content *ngIf='global.getUser().faculty' class="analysis">
+    <ion-list inset>
+        <ion-list-header>
+            Evaluations done by {{global.getUser().fullName}}
+        </ion-list-header>
+        <ion-item *ngFor="let item of evaluations" (click)="showAnalysis(item)">
+            <!-- <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="item.date"></ion-datetime> -->
+            <h2>{{item.student.fullName}}</h2>
+            <h3>{{item.clinicType}}</h3>
+            <!-- <p>{{item.date}}</p>  -->
+        </ion-item>
+    </ion-list>
+</ion-content>
+<ion-content *ngIf='!global.getUser().faculty' class="analysis">
+    <ion-list inset>
+        <ion-list-header>
+           {{global.getUser().fullName}}'s evaluations  
+        </ion-list-header>
+        <ion-item *ngFor="let item of evaluations" (click)="showAnalysis(item)">
+            <!-- <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="item.date"></ion-datetime> -->
+            <h2>Evaluation done by : {{item.faculty.fullName}}</h2>
+            <h3>{{item.clinicType}}</h3>
+            <!-- <p>{{item.date}}</p>  -->
+        </ion-item>
+    </ion-list>
 </ion-content>

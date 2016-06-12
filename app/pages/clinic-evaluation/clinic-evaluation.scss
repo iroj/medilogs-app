@@ -1,3 +1,45 @@
 .clinic-evaluation {
-
+    .range-slider {
+        h4 {
+            font-size: 14px;
+            margin:0%;
+        }
+        margin-left: 15px;
+        p {
+            float: right;
+        }
+        input {
+            text-align: center;
+            width: 90%;
+            border-radius: 50%;
+        }
+    }
+    .special {
+        margin-left: 15px;
+    }
+    .down {
+        float: right;
+    }
+    .toggle-icon {
+        width: 36px;
+        height: 20px;
+    }
+    .toggle-inner {
+        top: 0;
+        width: 20px;
+        height: 20px;
+    }
+    .radio-options {
+        font-size: 14px;
+        margin-left: 20px;
+    }
+    .radio-header {
+        h4{
+            margin:0%;
+        }
+        p {
+            margin: 2px;
+            float: right;
+        }
+    }
 }
