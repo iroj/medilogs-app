@@ -1,4 +1,5 @@
-import { Page, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
+import { Component} from '@angular/core';
 import * as c3 from 'c3';
 /*
   Generated class for the ChartsPage page.
@@ -6,7 +7,7 @@ import * as c3 from 'c3';
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
-@Page({
+@Component({
   templateUrl: 'build/pages/charts/charts.html',
 })
 export class ChartsPage {

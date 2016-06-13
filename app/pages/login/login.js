@@ -1,9 +1,10 @@
-import { Page, Alert, NavController } from 'ionic-angular';
+import { Alert, NavController, Loading } from 'ionic-angular';
+import { Component } from '@angular/core';
 import { FORM_DIRECTIVES } from '@angular/common';
 import { Auth } from '../../providers/auth/auth';
 import { Global } from '../../providers/global/global';
 import { TabsPage } from '../tabs/tabs';
-@Page({
+@Component({
   templateUrl: 'build/pages/login/login.html',
   directives: [FORM_DIRECTIVES]
 })
@@ -21,6 +22,10 @@ export class LoginPage {
     this.authService = authService;
     this.global = global;
     this.TabsPage = TabsPage;
+    this.loading = Loading.create({
+      content: 'Logging in'
+    });
+
   }
 
   logout() {
@@ -35,6 +40,7 @@ export class LoginPage {
       });
       this.nav.present(alert);
     } else {
+      this.nav.present(this.loading);
       let user = {
         userName: userCred.userName,
         password: userCred.password,
@@ -47,6 +53,7 @@ export class LoginPage {
 
       this.authService.signup(user).subscribe(
         data => {
+          this.loading.dismiss();
           if (data.user) {
             this.global.setUser(data.user)
             this.nav.push(this.TabsPage);
@@ -64,9 +71,11 @@ export class LoginPage {
     }
   }
   login(loginCred) {
-    console.log(loginCred);
+    this.nav.present(this.loading);
     this.authService.login(loginCred).subscribe(
       data => {
+        this.loading.dismiss();
+
         if (data.user) {
           this.global.setUser(data.user)
           this.nav.push(this.TabsPage);

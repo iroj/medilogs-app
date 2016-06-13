@@ -1,12 +1,37 @@
 <ion-navbar *navbar>
-   
     <ion-title>Account</ion-title>
 </ion-navbar>
 <ion-content class="accounts">
-    <div padding>
-        <h1>Welcome, {{user.fullName}}</h1>
-        <p *ngIf="!user.faculty" >(Student)</p>
-        <p *ngIf="user.faculty" >(Faculty)</p>
-        <button block (click)="logout()">Logout</button>
-    </div>
+    <ion-card>
+        <ion-card-header class='header'>
+            Welcome to MediLogs
+        </ion-card-header>
+        <ion-item class='profile'>
+            <img src="img/unknown.png">
+            <br>
+            <h2>{{user.fullName}}</h2>
+            <p *ngIf="!user.faculty">Logged in as Student</p>
+            <p *ngIf="user.faculty">Logged in as Faculty</p>
+        </ion-item>
+    </ion-card>
+    <ion-card>
+        <ion-item>
+            <ion-label>Personal Information</ion-label>
+            <ion-icon primary name="create" item-right (click)="confirmPassword()"></ion-icon>
+        </ion-item>
+        <ion-item >
+            <ion-label dark >Full Name</ion-label>
+            <ion-input  [disabled]="!edit" type="text" [(ngModel)]= 'user.fullName' placeholder='{{user.fullName}}'></ion-input>
+        </ion-item>
+        <ion-item>
+        <ion-label dark>User Name</ion-label>
+            <ion-input  [disabled]="!edit" type="text" [(ngModel)]= 'user.userName' placeholder='{{user.userName}}'></ion-input>
+        </ion-item>
+        <ion-item>
+        <ion-label dark>Email</ion-label>
+            <ion-input  [disabled]="!edit" type="text" [(ngModel)]= 'user.email' placeholder='{{user.email}}'></ion-input>
+        </ion-item>
+        <button block *ngIf="edit" (click)="change(user)">Submit Changes</button>
+        <button block *ngIf="!edit" (click)="logout()">Logout</button>
+    </ion-card>
 </ion-content>

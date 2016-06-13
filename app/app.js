@@ -1,6 +1,6 @@
-import { App, Platform, IonicApp, MenuController } from 'ionic-angular';
+import { Component, provide, Type } from '@angular/core';
+import { Platform, App, ionicBootstrap } from 'ionic-angular';
 import { StatusBar } from 'ionic-native';
-import { provide, Type } from '@angular/core';
 
 import { LoginPage } from './pages/login/login';
 import { TabsPage } from './pages/tabs/tabs';
@@ -14,49 +14,31 @@ import { Http, Headers, RequestOptions, JSONP_PROVIDERS, Jsonp } from '@angular/
 import { Data } from './providers/data/data';
 import { Auth } from './providers/auth/auth';
 import { Global } from './providers/global/global';
-import {CHART_DIRECTIVES} from 'ng2-charts/ng2-charts'
+import { CHART_DIRECTIVES } from 'ng2-charts/ng2-charts'
 
-@App({
-    templateUrl: 'build/app.html',
-    config: {
-      iconMode: 'md',
-      menuType: 'push'
-    },
-    providers: [
-      [Data],
-      [Auth],
-      [Global],
-      [JSONP_PROVIDERS],
-      [CHART_DIRECTIVES]
-    ]
-  })
-  // bootstrap(AppComponent, [Data]);
+@Component({
+  templateUrl: 'build/app.html',
+})
+
 export class MyApp {
   static get parameters() {
     return [
-      [IonicApp],
+      [App],
       [Platform],
-      [MenuController],
       [Data],
       [Auth],
       [Global]
     ];
   }
-  constructor(app, platform, menu, dataService, authService, global) {
+  constructor(app, platform, dataService, authService, global) {
     // set up our app
     this.app = app;
     this.platform = platform;
-    this.menu = menu;
     this.dataService = dataService;
     this.authService = authService;
     this.global = global;
     this.pages = [
       { title: 'Home', icon: 'home', component: TabsPage },
-      // { title: 'Settings', icon: 'settings', component: SettingsPage },
-      // { title: 'Lab Encounter', icon: 'flask', component: LabEncounterPage },
-      // { title: 'Clinic Encounter', icon: 'medkit', component: ClinicEncounterPage },
-      // { title: 'Lab Evaluation', icon: 'card', component: LabEvaluationPage },
-      // { title: 'Clinic Evaluation', icon: 'clipboard', component: ClinicEvaluationPage }
       { title: 'Clinic Evaluation', icon: 'clipboard', component: ClinicEvaluationPage }
     ];
     this.initializeApp();
@@ -82,3 +64,13 @@ export class MyApp {
     this.rootPage = page;
   }
 }
+ionicBootstrap(MyApp, [Data,
+  Auth,
+  Global,
+  JSONP_PROVIDERS,
+  CHART_DIRECTIVES
+], {
+  tabbarPlacement: 'bottom',
+  iconMode: 'md',
+  menuType: 'push'
+});

@@ -1,17 +1,9 @@
 .clinic-evaluation {
-    .range-slider {
-        h4 {
+    .range-box {
+        text-align: left;
+        .head {
             font-size: 14px;
-            margin:0%;
-        }
-        margin-left: 15px;
-        p {
-            float: right;
-        }
-        input {
-            text-align: center;
-            width: 90%;
-            border-radius: 50%;
+            position: absolute;
         }
     }
     .special {
@@ -34,8 +26,8 @@
         margin-left: 20px;
     }
     .radio-header {
-        h4{
-            margin:0%;
+        h4 {
+            margin: 0%;
         }
         p {
             margin: 2px;

@@ -21,6 +21,7 @@ export class Global {
     this.data = null;
   }
   setUser(user) {
+    console.log(user)
     this.user = user;
   }
 

@@ -1,4 +1,5 @@
-import {Page, NavController} from 'ionic-angular';
+import { NavController} from 'ionic-angular';
+import { Component} from '@angular/core';
 
 /*
   Generated class for the SettingsPage page.
@@ -6,7 +7,7 @@ import {Page, NavController} from 'ionic-angular';
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
-@Page({
+@Component({
   templateUrl: 'build/pages/settings/settings.html',
 })
 export class SettingsPage {

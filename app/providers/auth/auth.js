@@ -70,4 +70,15 @@ export class Auth {
   logout(item) {
     this.storage.remove('user');
   }
+
+  edit(user) {
+    console.log(user);
+    let link = this.global.getServer() + "api/edit";
+    return this.http.post(link, JSON.stringify(user), this.options)
+      .map(res => res.json())
+      .do(res => {
+        console.log(res)
+          this.storage.set('user', JSON.stringify(res.user));        
+      })
+  }
 }

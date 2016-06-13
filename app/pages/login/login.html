@@ -1,4 +1,4 @@
-<ion-navbar  *navbar hideBackButton='false'>
+<ion-navbar *navbar hideBackButton='false'>
     <ion-title>MediLogs</ion-title>
 </ion-navbar>
 <ion-content padding class="login">
@@ -21,7 +21,7 @@
                 <ion-input type="password" ngControl="password"></ion-input>
             </ion-item>
             <ion-item>
-                <ion-label> Stay Logged In</ion-label>
+                <ion-label stacked> Stay Logged In</ion-label>
                 <ion-toggle checked="true" ngControl="stayConnected" value='stayConnected'></ion-toggle>
             </ion-item>
             <div padding>
@@ -30,28 +30,28 @@
         </form>
         <form *ngSwitchWhen="'signup'" #signupCreds="ngForm" (ngSubmit)="signup(signupCreds.value)">
             <ion-item>
-                <ion-label floating>Full Name</ion-label>
+                <ion-label stacked>Full Name</ion-label>
                 <ion-input type="text" ngControl="fullName"></ion-input>
             </ion-item>
             <ion-item>
-                <ion-label floating>Username</ion-label>
+                <ion-label stacked>Username</ion-label>
                 <ion-input type="text" ngControl="userName"></ion-input>
             </ion-item>
             <ion-item>
-                <ion-label floating>Password</ion-label>
+                <ion-label stacked>Password</ion-label>
                 <ion-input type="password" ngControl="password"></ion-input>
             </ion-item>
             <ion-item>
-                <ion-label floating>E-mail Address</ion-label>
+                <ion-label stacked>E-mail Address</ion-label>
                 <ion-input type="email" ngControl="email"></ion-input>
             </ion-item>
             <ion-item (click)='faculty=!faculty'>
-                <ion-label *ngIf='faculty'> Faculty</ion-label>
-                <ion-label *ngIf='!faculty'> Student</ion-label>
-                <ion-toggle ngControl="faculty" value='faculty'></ion-toggle>
+                <ion-label stacked> Student / Faculty
+                </ion-label>
+                    <ion-toggle ngControl="faculty" value='faculty'></ion-toggle>
             </ion-item>
             <ion-item>
-                <ion-label> Stay Logged In</ion-label>
+                <ion-label stacked> Stay Logged In</ion-label>
                 <ion-toggle ngControl="stayConnected" value='stayConnected'></ion-toggle>
             </ion-item>
             <div padding>

@@ -1,11 +1,11 @@
-import { Page } from 'ionic-angular';
+import { Component} from '@angular/core';
 import { AccountsPage } from '../accounts/accounts';
 import { DocumentsPage } from '../documents/documents';
 import { AnalysisPage } from '../analysis/analysis';
 import { Data } from '../../providers/data/data';
 
 
-@Page({
+@Component({
   templateUrl: 'build/pages/tabs/tabs.html'
 })
 export class TabsPage {

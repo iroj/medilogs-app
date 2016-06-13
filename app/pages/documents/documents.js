@@ -1,4 +1,5 @@
-import { Page, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
+import { Component} from '@angular/core';
 import { LabEncounterPage } from '../lab-encounter/lab-encounter';
 import { ClinicEncounterPage } from '../clinic-encounter/clinic-encounter';
 import { LabEvaluationPage } from '../lab-evaluation/lab-evaluation';
@@ -6,7 +7,7 @@ import { ClinicEvaluationPage } from '../clinic-evaluation/clinic-evaluation';
 import { Data } from '../../providers/data/data';
 import { Global } from '../../providers/global/global';
 
-@Page({
+@Component({
   templateUrl: 'build/pages/documents/documents.html',
 })
 export class DocumentsPage {

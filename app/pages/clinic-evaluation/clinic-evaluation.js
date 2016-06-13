@@ -1,4 +1,5 @@
-import { Page, NavController, Alert } from 'ionic-angular';
+import { NavController, Alert, Loading } from 'ionic-angular';
+import { Component} from '@angular/core';
 import { Data } from '../../providers/data/data';
 import { Auth } from '../../providers/auth/auth';
 import { FORM_DIRECTIVES } from '@angular/common';
@@ -10,7 +11,7 @@ import * as _ from 'lodash';
   See http://ionicframework.com/docs/v2/components/#navigation for more info on
   Ionic pages and navigation.
 */
-@Page({
+@Component({
   templateUrl: 'build/pages/clinic-evaluation/clinic-evaluation.html',
   directives: [FORM_DIRECTIVES]
 })
@@ -34,6 +35,9 @@ export class ClinicEvaluationPage {
     console.log(this.faculty);
     this.searchQuery = '';
     this.initializeItems();
+    this.loading = Loading.create({
+      content: 'Submitting Evaluation'
+    });
 
   }
 
@@ -60,17 +64,16 @@ export class ClinicEvaluationPage {
 
   }
   submit(data) {
-    if (!data.date || !data.time || !data.clinic || !data.encounter) {
+    if (!data.date || !data.clinic || !data.encounter) {
       let alert = Alert.create({
         title: 'Please complete the form',
         buttons: ['Dismiss']
       });
       this.nav.present(alert);
     } else {
-
+      this.nav.present(this.loading);
       this.eval = {
         date: data.date,
-        time: data.time,
         clinicType: data.clinic,
         encounterType: data.encounter,
         performance: {
@@ -106,6 +109,7 @@ export class ClinicEvaluationPage {
       this.authService.submit(this.eval).subscribe(
         data => {
           this.nav.pop();
+          this.loading.dismiss();
         })
 
     }
