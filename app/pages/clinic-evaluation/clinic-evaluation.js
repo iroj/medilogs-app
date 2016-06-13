@@ -1,5 +1,5 @@
 import { NavController, Alert, Loading } from 'ionic-angular';
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { Data } from '../../providers/data/data';
 import { Auth } from '../../providers/auth/auth';
 import { FORM_DIRECTIVES } from '@angular/common';
@@ -38,6 +38,16 @@ export class ClinicEvaluationPage {
     this.loading = Loading.create({
       content: 'Submitting Evaluation'
     });
+    this.default = {
+      cchpi: 5,
+      history: 5,
+      entrance: 5,
+      slit: 5,
+      iop: 5,
+      fundus: 5,
+      anp: 5
+    };
+
 
   }
 

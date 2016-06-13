@@ -45,45 +45,46 @@
         </ion-item>
         <ion-list [(ngModel)]='performance' radio-group>
             <ion-item class='radio-header'>
-                <ion-label>Rate student's performance</ion-label>
+                <h4>How was the student's performance</h4>
+                <!-- <p>If student performed above or below expected please select No</p> -->
             </ion-item>
             <ion-item>
-                <ion-label class='radio-options'>Yes</ion-label>
+                <ion-label class='radio-options'>As Expected</ion-label>
+                <ion-radio checked="true" value="false" > </ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label class='radio-options'>Above / Below expectation</ion-label>
                 <ion-radio value="true"> </ion-radio>
-            </ion-item>
-            <ion-item>
-                <ion-label class='radio-options'>No</ion-label>
-                <ion-radio checked="true" value="false"> </ion-radio>
             </ion-item>
         </ion-list>
         <ion-list *ngIf='performance==="true"'>
             <ion-item class='range-box'>
                 <ion-label class='head'> CC and HPI</ion-label>
-                <ion-range ngControl="cc_hpi" min="0" max="10" step=' 1 ' danger pin="true"></ion-range>
+                <ion-range ngControl="cc_hpi" [(ngModel)]='default.cchpi' min="0" max="10" step='1' danger pin="true" snaps='true'></ion-range>
             </ion-item>
             <ion-item class='range-box'>
                 <ion-label class='head'> History</ion-label>
-                <ion-range ngControl="history" min="0" max="10" step=' 1 ' danger pin="true"></ion-range>
+                <ion-range ngControl="history" [(ngModel)]='default.history' min="0" max="10" step='1' danger pin="true" snaps='true'></ion-range>
             </ion-item>
             <ion-item class='range-box'>
                 <ion-label class='head'> Entrance Testing</ion-label>
-                <ion-range ngControl="entrance" min="0" max="10" step=' 1 ' danger pin="true"></ion-range>
+                <ion-range ngControl="entrance" [(ngModel)]='default.entrance' min="0" max="10" step='1' danger pin="true" snaps='true'></ion-range>
             </ion-item>
             <ion-item class='range-box'>
                 <ion-label class='head'> Slit Testing</ion-label>
-                <ion-range ngControl="slit" min="0" max="10" step=' 1 ' danger pin="true"></ion-range>
+                <ion-range ngControl="slit" [(ngModel)]='default.slit' min="0" max="10" step='1' danger pin="true" snaps='true'></ion-range>
             </ion-item>
             <ion-item class='range-box'>
                 <ion-label class='head'> IOP Testing</ion-label>
-                <ion-range ngControl="iop" min="0" max="10" step=' 1 ' danger pin="true"></ion-range>
+                <ion-range ngControl="iop" [(ngModel)]='default.iop' min="0" max="10" step='1' danger pin="true" snaps='true'></ion-range>
             </ion-item>
             <ion-item class='range-box'>
                 <ion-label class='head'> Fundus</ion-label>
-                <ion-range ngControl="fundus" min="0" max="10" step=' 1 ' danger pin="true"></ion-range>
+                <ion-range ngControl="fundus" [(ngModel)]='default.fundus' min="0" max="10" step='1' danger pin="true" snaps='true'></ion-range>
             </ion-item>
             <ion-item class='range-box'>
                 <ion-label class='head'> A & P</ion-label>
-                <ion-range ngControl="anp" min="0" max="10" step=' 1 ' danger pin="true"></ion-range>
+                <ion-range ngControl="anp" [(ngModel)]='default.anp' min="0" max="10" step='1' danger pin="true" snaps='true'></ion-range>
             </ion-item>
         </ion-list>
         <ion-list [(ngModel)]='special' radio-group>
